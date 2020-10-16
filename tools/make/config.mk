@@ -1,0 +1,3 @@
+CFLAGS += -DDECK_FORCE=LEDMatrix
+ 
+DEBUG=1
