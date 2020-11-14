@@ -27,6 +27,7 @@
 
 #include <string.h>
 #include "platform.h"
+#include "debug.h"
 
 static const platformConfig_t* active_config = 0;
 
@@ -83,6 +84,7 @@ int platformInitConfiguration(const platformConfig_t* configs, const int nrOfCon
   char* deviceType = xstr(DEVICE_TYPE_STRING_FORCE);
 #endif
 
+  DEBUG_PRINT("deviceType %s %s\n", deviceType, deviceTypeString);
   for (int i = 0; i < nrOfConfigs; i++) {
     const platformConfig_t* config = &configs[i];
     if (strcmp(config->deviceType, deviceType) == 0) {

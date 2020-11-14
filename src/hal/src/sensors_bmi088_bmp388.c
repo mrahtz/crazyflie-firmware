@@ -127,6 +127,7 @@ static Axis3f gyroBias;
 static Axis3f gyroBiasStdDev;
 #endif
 static bool gyroBiasFound = false;
+static bool lastGyroBiasFound = false;
 static float accScaleSum = 0;
 static float accScale = 1;
 static bool accScaleFound = false;
@@ -280,6 +281,7 @@ static void sensorsTask(void *param)
    * this is only required by the z-ranger, since the
    * configuration will be done after system start-up */
   //vTaskDelayUntil(&lastWakeTime, M2T(1500));
+  DEBUG_PRINT("Start of sensor loop\n");
   while (1)
   {
     if (pdTRUE == xSemaphoreTake(sensorsDataReady, portMAX_DELAY))
@@ -296,6 +298,11 @@ static void sensorsTask(void *param)
 #else
       gyroBiasFound = processGyroBias(gyroRaw.x, gyroRaw.y, gyroRaw.z, &gyroBias);
 #endif
+      if (!lastGyroBiasFound && gyroBiasFound)
+      {
+    	  DEBUG_PRINT("Gyro bias found!\n");
+      }
+      lastGyroBiasFound = gyroBiasFound;
       if (gyroBiasFound)
       {
          processAccScale(accelRaw.x, accelRaw.y, accelRaw.z);
